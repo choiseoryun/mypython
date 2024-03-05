@@ -55,3 +55,19 @@ def delete_data(item: Item):
     finally:
         cursor.close()
         db.close()
+
+@app.get("/")
+def show_data():
+    db = get_db_connection()
+    cursor = get_db_cursor(db)
+    try:
+        sql = "SELECT * FROM test_table"
+        cursor.execute(sql,)
+        rows = cursor.fetchall()
+        return {"data": rows}
+    except Exception as e:
+        print(f"Error in show_data: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        cursor.close()
+        db.close()
